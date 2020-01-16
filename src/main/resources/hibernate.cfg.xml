@@ -27,6 +27,5 @@
         <mapping class="models.Follow"/>
         <mapping class="models.Post"/>
 
-
     </session-factory>
 </hibernate-configuration>

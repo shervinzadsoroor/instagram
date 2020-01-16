@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,10 +19,9 @@ public class Follow {
     private Long id;
 
     @Column
-    private List<Long> followerId;
+    private Long accountId;
 
     @Column
-    private List<Long> followingId;
-
+    private Long followerId;
 
 }
