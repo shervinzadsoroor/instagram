@@ -1,6 +1,7 @@
 package crudrepositories;
 
 import hibernateutil.HibernateUtil;
+import models.Account;
 import models.Post;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,7 +9,7 @@ import org.hibernate.SessionFactory;
 import java.util.Scanner;
 
 public class PostCrud {
-    public void newPost(String content) {
+    public void newPost(String content, Account account) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -17,6 +18,7 @@ public class PostCrud {
         Post post = Post.builder()
                 .tag(contents[0])
                 .title(contents[1])
+                .account(account)
                 .build();
         session.save(post);
 

@@ -47,7 +47,7 @@ public class Main {
                 } else if(command.equalsIgnoreCase("log out")) {
                     account = null;
                 } else if(command.equalsIgnoreCase("new post")) {
-                       postCrud.newPost(postCrud.getNewPostContent());
+                       postCrud.newPost(postCrud.getNewPostContent(),account);
                 } else {
                     System.out.println("wrong command !!!");
                 }
