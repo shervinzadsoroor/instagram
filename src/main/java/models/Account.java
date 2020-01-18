@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +26,8 @@ public class Account {
 
     @Column
     private String password;
+
+    @OneToMany(mappedBy = "account")
+    List<Post> posts = new ArrayList<Post>();
 
 }

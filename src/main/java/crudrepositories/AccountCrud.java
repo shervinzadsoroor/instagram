@@ -33,7 +33,7 @@ public class AccountCrud {
         session.close();
     }
 
-    public Account signIn() {
+    public Account logIn() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -50,7 +50,7 @@ public class AccountCrud {
                 .setParameter("username", username)
                 .list();
 
-        if (list.size() > 0) {
+        if(list.size() > 0) {
             account = list.get(0);
             System.out.println("sign in successful !!!");
         } else {
@@ -74,7 +74,7 @@ public class AccountCrud {
         System.out.println("enter new password");
         String secondNewPass = scanner.nextLine();
 
-        if (firstNewPass.equals(secondNewPass)) {
+        if(firstNewPass.equals(secondNewPass)) {
             Query query = session.createQuery("update Account set password=:password where username=:username")
                     .setParameter("password", firstNewPass)
                     .setParameter("username", account.getUsername());
@@ -85,13 +85,18 @@ public class AccountCrud {
         session.close();
     }
 
-    public void delete() {
+    public void delete(Long id) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
+        Query query = session.createQuery("delete from Account where id=:id")
+                .setParameter("id", id);
+        query.executeUpdate();
+
         session.getTransaction().commit();
         session.close();
     }
+
 
 }
