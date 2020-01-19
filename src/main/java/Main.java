@@ -71,7 +71,13 @@ public class Main {
                         System.out.println("ID NOT FOUND !!!");
                     }
                 } else if(command.equalsIgnoreCase("delete post")) {
-                    postCrud.delete();
+                    postCrud.showAll(account.getId());
+                    System.out.println("choose id of a post to delete:");
+                    Long postId = Long.parseLong(scanner.nextLine());
+                    if(postCrud.isIdExist(postId)) {
+                        postCrud.delete(postId);
+                        System.out.println("POST DELETED !!!");
+                    }
                 } else if(command.equalsIgnoreCase("show posts")) {
                     postCrud.showAll(account.getId());
                 } else {

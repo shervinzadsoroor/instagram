@@ -54,11 +54,14 @@ public class PostCrud {
         session.close();
     }
 
-    public void delete() {
+    public void delete(Long postId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
 
+        Query query = session.createQuery("delete from Post where id=:id")
+                .setParameter("id", postId);
+        query.executeUpdate();
 
         session.getTransaction().commit();
         session.close();
