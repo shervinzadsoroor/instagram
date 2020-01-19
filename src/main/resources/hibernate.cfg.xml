@@ -22,7 +22,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mapping -->
-        <mapping class="models.User"/>
         <mapping class="models.Account"/>
         <mapping class="models.Follow"/>
         <mapping class="models.Post"/>

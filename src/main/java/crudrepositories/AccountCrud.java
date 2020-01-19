@@ -11,9 +11,12 @@ import java.util.Scanner;
 
 public class AccountCrud {
 
+    SessionFactory sessionFactory;
+    Session session;
+
     public void signUp() {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
         session.beginTransaction();
 
         Scanner scanner = new Scanner(System.in);
@@ -34,8 +37,8 @@ public class AccountCrud {
     }
 
     public Account logIn() {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
         session.beginTransaction();
 
         Account account = null;
@@ -63,8 +66,8 @@ public class AccountCrud {
     }
 
     public void changePass(Account account) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
         session.beginTransaction();
 
         Scanner scanner = new Scanner(System.in);
@@ -86,8 +89,8 @@ public class AccountCrud {
     }
 
     public void delete(Long id) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
         session.beginTransaction();
 
         Query query = session.createQuery("delete from Account where id=:id")
