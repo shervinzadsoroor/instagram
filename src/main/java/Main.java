@@ -32,7 +32,8 @@ public class Main {
             }
 
             if(account != null) {
-                System.out.println("what do you want? ( change pass | delete account | new post | edit post | delete post | show posts | log out ):");
+                System.out.println("what do you want? ( change pass | delete account | new post | edit post | delete post | show posts | " +
+                        "search account | log out ):");
                 command = scanner.nextLine();
                 if(command.equalsIgnoreCase("change pass")) {
                     accountCrud.changePass(account);
@@ -80,6 +81,10 @@ public class Main {
                     }
                 } else if(command.equalsIgnoreCase("show posts")) {
                     postCrud.showAll(account.getId());
+                }else if(command.equalsIgnoreCase("search account")) {
+                    System.out.println("enter an username to search: ");
+                    String username = scanner.nextLine();
+                    accountCrud.search(username);
                 } else {
                     System.out.println("wrong command !!!");
                 }

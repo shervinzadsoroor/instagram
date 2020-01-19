@@ -102,4 +102,22 @@ public class AccountCrud {
     }
 
 
+    public void search(String username) {
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        List<Account> accounts = session.createQuery("from Account where username like '%" + username + "%'")
+                .list();
+        if(accounts.size()>0){
+            for(Account account : accounts) {
+                System.out.println(account.toString());
+            }
+        }else {
+            System.out.println("NO RESULT !!!");
+        }
+
+        session.getTransaction().commit();
+        session.close();
+    }
 }
