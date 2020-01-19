@@ -81,10 +81,15 @@ public class Main {
                     }
                 } else if(command.equalsIgnoreCase("show posts")) {
                     postCrud.showAll(account.getId());
-                }else if(command.equalsIgnoreCase("search account")) {
+                } else if(command.equalsIgnoreCase("search account")) {
                     System.out.println("enter an username to search: ");
                     String username = scanner.nextLine();
                     accountCrud.search(username);
+                    System.out.println("enter account id to show the posts or press 0 to ignore : ");
+                    Long id = Long.parseLong(scanner.nextLine());
+                    if(id != 0) {
+                        postCrud.showAll(id);
+                    }
                 } else {
                     System.out.println("wrong command !!!");
                 }

@@ -72,8 +72,9 @@ public class PostCrud {
         session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Account account = session.load(Account.class,accountId);
-        System.out.println(account.getPosts().toString());
+        Account account = session.load(Account.class, accountId);
+        System.out.println(account.getPosts().size() > 0 ? account.getPosts().toString() :
+                "account does not have any posts !!!");
 
         session.getTransaction().commit();
         session.close();
