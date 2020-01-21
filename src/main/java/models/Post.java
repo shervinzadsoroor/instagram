@@ -4,7 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -27,11 +29,14 @@ public class Post implements Serializable, Comparable<Post> {
     @Column
     private int numOfLiked;
 
+    @OneToMany(mappedBy = "commentedPost")
+    private List<Comment> comments = new ArrayList<>();
+
     @ManyToOne
     private Account account;
 
     @ManyToMany(mappedBy = "LikedPosts")
-    private Set<Account> likerAccounts = new HashSet<Account>();
+    private Set<Account> likerAccounts = new HashSet<>();
 
     public Set<Account> getLikerAccounts() {
         return likerAccounts;
@@ -89,6 +94,7 @@ public class Post implements Serializable, Comparable<Post> {
                 ", title='" + title + '\'' +
                 ", tag='" + tag + '\'' +
                 ", numOfLiked=" + numOfLiked +
+                ", comments=" + comments +
                 '}';
     }
 

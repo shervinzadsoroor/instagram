@@ -26,13 +26,13 @@ public class Account implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "account")
-    private List<Post> posts = new ArrayList();
+    private List<Post> posts = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "likerAccount_post",
             joinColumns = {@JoinColumn(name = "likerAccount_id")},
             inverseJoinColumns = {@JoinColumn(name = "likedPost_id")})
-    private Set<Post> LikedPosts = new HashSet<Post>();
+    private Set<Post> LikedPosts = new HashSet<>();
 
     public Set<Post> getLikedPosts() {
         return LikedPosts;

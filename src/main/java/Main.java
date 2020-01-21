@@ -1,6 +1,8 @@
 import crudrepositories.AccountCrud;
+import crudrepositories.CommentCrud;
 import crudrepositories.PostCrud;
 import models.Account;
+import models.Comment;
 
 import java.util.Scanner;
 
@@ -10,6 +12,7 @@ public class Main {
         Account account = null;
         AccountCrud accountCrud = new AccountCrud();
         PostCrud postCrud = new PostCrud();
+        CommentCrud commentCrud = new CommentCrud();
         Scanner scanner = new Scanner(System.in);
         String command;
 
@@ -103,7 +106,7 @@ public class Main {
                     System.out.println("enter an username to search: ");
                     String username = scanner.nextLine();
                     accountCrud.search(username);
-                    System.out.println("what do you want?( follow | show posts | exit )");
+                    System.out.println("what do you want?( follow | show posts | comment | exit )");
                     command = scanner.nextLine();
                     System.out.println("enter account id: ");
                     Long id = Long.parseLong(scanner.nextLine());
@@ -112,11 +115,18 @@ public class Main {
 
                     } else if(command.equalsIgnoreCase("show posts")) {
                         postCrud.showAll(id);
-                        System.out.println("enter post id to like or 0 to ignore: ");
-                        Long postIdToLike = Long.parseLong(scanner.nextLine());
-                        if(postIdToLike != 0) {
-                            postCrud.like(postIdToLike, id, account.getId());
+                        System.out.println("what do you want - press 0 to exit( like | comment ): ");
+                        command = scanner.nextLine();
+                        System.out.println("enter post id: ");
+                        Long postId = Long.parseLong(scanner.nextLine());
+                        if(command.equalsIgnoreCase("like")) {
+                            postCrud.like(postId, id, account.getId());
+                        } else if(command.equalsIgnoreCase("comment")) {
+                            System.out.println("context: ");
+                            String context = scanner.nextLine();
+                            commentCrud.newComment(account, context, postId);
                         }
+
                     } else if(command.equalsIgnoreCase("exit")) {
 
                     } else {
