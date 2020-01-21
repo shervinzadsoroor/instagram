@@ -133,8 +133,6 @@ public class AccountCrud {
         session.beginTransaction();
 
         Account followee = session.load(Account.class, id);
-        //followee.addFollower(follower);
-//        follower.setOwner(followee);
         followee.getFollowers().add(follower);
         session.update(followee);
 
@@ -147,6 +145,9 @@ public class AccountCrud {
         session = sessionFactory.openSession();
         session.beginTransaction();
 
+        Account followee = session.load(Account.class, id);
+        followee.getFollowers().remove(unFollower);
+        session.update(followee);
 
         session.getTransaction().commit();
         session.close();
