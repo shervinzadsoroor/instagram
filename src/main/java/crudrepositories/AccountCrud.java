@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class AccountCrud {
 
@@ -54,8 +55,12 @@ public class AccountCrud {
                 .list();
 
         if(list.size() > 0) {
-            account = list.get(0);
-            System.out.println("sign in successful !!!");
+            if(list.get(0).getPassword().equals(password)){
+                account = list.get(0);
+                System.out.println("sign in successful !!!");
+            }else{
+                System.out.println("WRONG PASSWORD !!!");
+            }
         } else {
             System.out.println("account does not exist !!! ");
         }
@@ -109,11 +114,11 @@ public class AccountCrud {
 
         List<Account> accounts = session.createQuery("from Account where username like '%" + username + "%'")
                 .list();
-        if(accounts.size()>0){
+        if(accounts.size() > 0) {
             for(Account account : accounts) {
                 System.out.println(account.toString());
             }
-        }else {
+        } else {
             System.out.println("NO RESULT !!!");
         }
 
@@ -122,7 +127,7 @@ public class AccountCrud {
     }
 
     // account in the argument will follow or un follow another account
-    public void follow(Long id,Account follower) {
+    public void follow(Long id, Account follower) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
@@ -146,4 +151,5 @@ public class AccountCrud {
         session.getTransaction().commit();
         session.close();
     }
+
 }

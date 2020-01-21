@@ -28,12 +28,12 @@ public class Account implements Serializable {
     @OneToMany(mappedBy = "account")
     List<Post> posts = new ArrayList();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "following_follower",
             joinColumns = {@JoinColumn(name = "following_id")},
             inverseJoinColumns = {@JoinColumn(name = "follower_id")})
     private Set<Account> followers = new HashSet<Account>();
-    @ManyToMany(mappedBy = "followers")
+    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
     private Set<Account> followings = new HashSet<Account>();
 
     public Set<Account> getFollowers() {

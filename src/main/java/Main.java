@@ -31,11 +31,18 @@ public class Main {
             }
 
             if(account != null) {
-                System.out.println("what do you want? ( change pass | delete account | new post | edit post | delete post | show posts | " +
+                System.out.println("what do you want? ( show followers | show followings | change pass | delete account | new post | edit post | delete post | show posts | " +
                         "search account | log out ):");
                 command = scanner.nextLine();
                 if(command.equalsIgnoreCase("change pass")) {
                     accountCrud.changePass(account);
+
+                } else if(command.equalsIgnoreCase("show followers")) {
+                    System.out.println(account.getFollowers().toString());
+
+                } else if(command.equalsIgnoreCase("show followings")) {
+                    System.out.println(account.getFollowings().toString());
+
                 } else if(command.equalsIgnoreCase("delete account")) {
                     System.out.println("are you sure to permanently delete your account?( yes | no )");
                     command = scanner.nextLine();
@@ -46,8 +53,10 @@ public class Main {
                     }
                 } else if(command.equalsIgnoreCase("log out")) {
                     account = null;
+
                 } else if(command.equalsIgnoreCase("new post")) {
                     postCrud.newPost(postCrud.getNewPostContent(), account);
+
                 } else if(command.equalsIgnoreCase("edit post")) {
                     postCrud.showAll(account.getId());
 
@@ -80,6 +89,7 @@ public class Main {
                     }
                 } else if(command.equalsIgnoreCase("show posts")) {
                     postCrud.showAll(account.getId());
+
                 } else if(command.equalsIgnoreCase("search account")) {
                     System.out.println("enter an username to search: ");
                     String username = scanner.nextLine();
