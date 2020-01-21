@@ -31,12 +31,16 @@ public class Main {
             }
 
             if(account != null) {
-                System.out.println("what do you want? ( show followers | show followings | change pass | delete account | new post | edit post | delete post | show posts | " +
+                System.out.println("what do you want? ( show followers | show followings | unFollow | change pass | delete account | new post | edit post | delete post | show posts | " +
                         "search account | log out ):");
                 command = scanner.nextLine();
                 if(command.equalsIgnoreCase("change pass")) {
                     accountCrud.changePass(account);
 
+                } else if(command.equalsIgnoreCase("unFollow")) {
+                    System.out.println("enter account id to un follow: ");
+                    Long unFollowId = Long.parseLong(scanner.nextLine());
+                    accountCrud.unFollow(unFollowId, account.getId());
                 } else if(command.equalsIgnoreCase("show followers")) {
                     System.out.println(account.getFollowers().toString());
 
@@ -94,14 +98,13 @@ public class Main {
                     System.out.println("enter an username to search: ");
                     String username = scanner.nextLine();
                     accountCrud.search(username);
-                    System.out.println("what do you want?( follow | unFollow | show posts | exit )");
+                    System.out.println("what do you want?( follow | show posts | exit )");
                     command = scanner.nextLine();
                     System.out.println("enter account id: ");
                     Long id = Long.parseLong(scanner.nextLine());
                     if(command.equalsIgnoreCase("follow")) {
-                        accountCrud.follow(id, account);
-                    } else if(command.equalsIgnoreCase("unFollow")) {
-                        accountCrud.unFollow(id, account);
+                        accountCrud.follow(id, account.getId());
+
                     } else if(command.equalsIgnoreCase("show posts")) {
                         postCrud.showAll(id);
                     } else if(command.equalsIgnoreCase("exit")) {

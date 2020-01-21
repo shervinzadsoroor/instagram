@@ -11,15 +11,14 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class AccountCrud {
-
     SessionFactory sessionFactory;
     Session session;
+
 
     public void signUp() {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
-
         Scanner scanner = new Scanner(System.in);
         System.out.println("enter your username: ");
         String userName = scanner.nextLine();
@@ -55,10 +54,10 @@ public class AccountCrud {
                 .list();
 
         if(list.size() > 0) {
-            if(list.get(0).getPassword().equals(password)){
+            if(list.get(0).getPassword().equals(password)) {
                 account = list.get(0);
                 System.out.println("sign in successful !!!");
-            }else{
+            } else {
                 System.out.println("WRONG PASSWORD !!!");
             }
         } else {
@@ -89,6 +88,7 @@ public class AccountCrud {
             query.executeUpdate();
         }
 
+        session.flush();
         session.getTransaction().commit();
         session.close();
     }
@@ -102,6 +102,7 @@ public class AccountCrud {
                 .setParameter("id", id);
         query.executeUpdate();
 
+        session.flush();
         session.getTransaction().commit();
         session.close();
     }
@@ -121,34 +122,46 @@ public class AccountCrud {
         } else {
             System.out.println("NO RESULT !!!");
         }
-
         session.getTransaction().commit();
         session.close();
     }
 
     // account in the argument will follow or un follow another account
-    public void follow(Long id, Account follower) {
+    public void follow(Long id, Long followerId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
 
         Account followee = session.load(Account.class, id);
+        Account follower = session.load(Account.class, followerId);
         followee.getFollowers().add(follower);
         session.update(followee);
-
+        session.flush();
         session.getTransaction().commit();
         session.close();
     }
 
-    public void unFollow(Long id, Account unFollower) {
+    public void unFollow(Long id, Long unFollowerId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
 
+        boolean isFollowerExist = false;
         Account followee = session.load(Account.class, id);
-        followee.getFollowers().remove(unFollower);
-        session.update(followee);
+        Account follower = session.load(Account.class, unFollowerId);
+        Set<Account> followers = followee.getFollowers();
 
+        for(Account f : followers) {
+            if(f.getId() == unFollowerId) {
+                isFollowerExist = true;
+            }
+        }
+        if(isFollowerExist) {
+            followers.remove(follower);
+        }
+        followee.setFollowers(followers);
+
+        session.flush();
         session.getTransaction().commit();
         session.close();
     }
