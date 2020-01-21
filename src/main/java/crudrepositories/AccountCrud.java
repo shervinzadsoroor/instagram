@@ -107,7 +107,6 @@ public class AccountCrud {
         session.close();
     }
 
-
     public void search(String username) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -126,7 +125,7 @@ public class AccountCrud {
         session.close();
     }
 
-    // account in the argument will follow or un follow another account
+    // second argument will follow or un follow the first argument
     public void follow(Long id, Long followerId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -135,10 +134,11 @@ public class AccountCrud {
         Account followee = session.load(Account.class, id);
         Account follower = session.load(Account.class, followerId);
         followee.getFollowers().add(follower);
-        session.update(followee);
+
         session.flush();
         session.getTransaction().commit();
         session.close();
+
     }
 
     public void unFollow(Long id, Long unFollowerId) {

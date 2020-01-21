@@ -19,15 +19,30 @@ public class Account implements Serializable {
     @Column
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
     private String password;
 
     @OneToMany(mappedBy = "account")
-    List<Post> posts = new ArrayList();
+    private List<Post> posts = new ArrayList();
 
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(name = "likerAccount_post",
+            joinColumns = {@JoinColumn(name = "likerAccount_id")},
+            inverseJoinColumns = {@JoinColumn(name = "likedPost_id")})
+    private Set<Post> LikedPosts = new HashSet<Post>();
+
+    public Set<Post> getLikedPosts() {
+        return LikedPosts;
+    }
+
+    public void setLikedPosts(Set<Post> likedPosts) {
+        LikedPosts = likedPosts;
+    }
+
+    //following and followers
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "following_follower",
             joinColumns = {@JoinColumn(name = "following_id")},
@@ -35,6 +50,7 @@ public class Account implements Serializable {
     private Set<Account> followers = new HashSet<Account>();
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
     private Set<Account> followings = new HashSet<Account>();
+
 
     public Set<Account> getFollowers() {
         return followers;

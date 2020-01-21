@@ -11,7 +11,7 @@ public class Main {
         AccountCrud accountCrud = new AccountCrud();
         PostCrud postCrud = new PostCrud();
         Scanner scanner = new Scanner(System.in);
-        String command = null;
+        String command;
 
         InitialHibernate.start();
 
@@ -31,8 +31,9 @@ public class Main {
             }
 
             if(account != null) {
-                System.out.println("what do you want? ( show followers | show followings | unFollow | change pass | delete account | new post | edit post | delete post | show posts | " +
-                        "search account | log out ):");
+                System.out.println("what do you want? ( show followers | show followings | unFollow | change pass |\n" +
+                        " delete account | new post | edit post | delete post | show posts | " +
+                        "search account | top posts | log out ):");
                 command = scanner.nextLine();
                 if(command.equalsIgnoreCase("change pass")) {
                     accountCrud.changePass(account);
@@ -94,6 +95,10 @@ public class Main {
                 } else if(command.equalsIgnoreCase("show posts")) {
                     postCrud.showAll(account.getId());
 
+                } else if(command.equalsIgnoreCase("top posts")) {
+                    System.out.println("enter max quantity of posts: ");
+                    Long max = Long.parseLong(scanner.nextLine());
+                    postCrud.searchTopLikedPosts(max);
                 } else if(command.equalsIgnoreCase("search account")) {
                     System.out.println("enter an username to search: ");
                     String username = scanner.nextLine();
@@ -107,6 +112,11 @@ public class Main {
 
                     } else if(command.equalsIgnoreCase("show posts")) {
                         postCrud.showAll(id);
+                        System.out.println("enter post id to like or 0 to ignore: ");
+                        Long postIdToLike = Long.parseLong(scanner.nextLine());
+                        if(postIdToLike != 0) {
+                            postCrud.like(postIdToLike, id, account.getId());
+                        }
                     } else if(command.equalsIgnoreCase("exit")) {
 
                     } else {

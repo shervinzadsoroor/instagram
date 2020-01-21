@@ -9,6 +9,8 @@ import org.hibernate.SessionFactory;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class PostCrud {
     private SessionFactory sessionFactory;
@@ -23,7 +25,8 @@ public class PostCrud {
         Post post = Post.builder()
                 .tag(contents[0])
                 .title(contents[1])
-                .account(account)
+                .numOfLiked(0)
+//                .account(account)
                 .build();
         session.save(post);
 
@@ -98,4 +101,45 @@ public class PostCrud {
         session.close();
         return bool;
     }
+
+    public void like(Long postIdToLike, Long accountId, Long accountIdWantsToLike) {
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+
+//        Account account = session.load(Account.class, accountId);
+        Account likerAccount = session.load(Account.class, accountIdWantsToLike);
+
+        Post post = session.load(Post.class, postIdToLike);
+
+        Set<Account> LikerAccounts = post.getLikerAccounts();
+        boolean bool = LikerAccounts.add(likerAccount);
+        post.setLikerAccounts(LikerAccounts);
+        //todo   liker accounts does not been saved in database !!!
+        if(bool) {
+            post.setNumOfLiked((post.getNumOfLiked()) + 1);
+        }
+
+        session.flush();
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void searchTopLikedPosts(Long postQuantity) {
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        List<Post> posts = session.createQuery("from Post ")
+                .list();
+
+        posts.sort(Post::compareTo);
+        posts.stream()
+                .limit(postQuantity)
+                .forEach(System.out::println);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
 }
