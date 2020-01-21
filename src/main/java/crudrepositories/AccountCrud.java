@@ -120,4 +120,30 @@ public class AccountCrud {
         session.getTransaction().commit();
         session.close();
     }
+
+    // account in the argument will follow or un follow another account
+    public void follow(Long id,Account follower) {
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Account followee = session.load(Account.class, id);
+        //followee.addFollower(follower);
+//        follower.setOwner(followee);
+        followee.getFollowers().add(follower);
+        session.update(followee);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void unFollow(Long id, Account unFollower) {
+        sessionFactory = HibernateUtil.getSessionFactory();
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+
+
+        session.getTransaction().commit();
+        session.close();
+    }
 }

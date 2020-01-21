@@ -23,8 +23,8 @@
 
         <!-- Mapping -->
         <mapping class="models.Account"/>
-        <mapping class="models.Follow"/>
         <mapping class="models.Post"/>
+
 
     </session-factory>
 </hibernate-configuration>

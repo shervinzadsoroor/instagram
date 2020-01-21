@@ -3,14 +3,17 @@ package models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-public class Account {
+public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -23,7 +26,31 @@ public class Account {
     private String password;
 
     @OneToMany(mappedBy = "account")
-    List<Post> posts = new ArrayList<Post>();
+    List<Post> posts = new ArrayList();
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "following_follower",
+            joinColumns = {@JoinColumn(name = "following_id")},
+            inverseJoinColumns = {@JoinColumn(name = "follower_id")})
+    private Set<Account> followers = new HashSet<Account>();
+    @ManyToMany(mappedBy = "followers")
+    private Set<Account> followings = new HashSet<Account>();
+
+    public Set<Account> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<Account> followers) {
+        this.followers = followers;
+    }
+
+    public Set<Account> getFollowings() {
+        return followings;
+    }
+
+    public void setFollowings(Set<Account> followings) {
+        this.followings = followings;
+    }
 
     public Long getId() {
         return id;

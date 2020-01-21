@@ -2,7 +2,6 @@ import crudrepositories.AccountCrud;
 import crudrepositories.PostCrud;
 import models.Account;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -85,11 +84,22 @@ public class Main {
                     System.out.println("enter an username to search: ");
                     String username = scanner.nextLine();
                     accountCrud.search(username);
-                    System.out.println("enter account id to show the posts or press 0 to ignore : ");
+                    System.out.println("what do you want?( follow | unFollow | show posts | exit )");
+                    command = scanner.nextLine();
+                    System.out.println("enter account id: ");
                     Long id = Long.parseLong(scanner.nextLine());
-                    if(id != 0) {
+                    if(command.equalsIgnoreCase("follow")) {
+                        accountCrud.follow(id, account);
+                    } else if(command.equalsIgnoreCase("unFollow")) {
+                        accountCrud.unFollow(id, account);
+                    } else if(command.equalsIgnoreCase("show posts")) {
                         postCrud.showAll(id);
+                    } else if(command.equalsIgnoreCase("exit")) {
+
+                    } else {
+                        System.out.println("WRONG COMMAND !!!");
                     }
+
                 } else {
                     System.out.println("wrong command !!!");
                 }
