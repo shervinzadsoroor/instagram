@@ -25,9 +25,18 @@ public class Main {
                 command = scanner.nextLine();
 
                 if(command.equalsIgnoreCase("sign up")) {
-                    accountCrud.signUp();
+                    System.out.println("enter your username: ");
+                    String userName = scanner.nextLine();
+                    System.out.println("enter your password: ");
+                    String password = scanner.nextLine();
+                    accountCrud.signUp(userName, password);
                 } else if(command.equalsIgnoreCase("login")) {
-                    account = accountCrud.logIn();
+                    System.out.println("enter username: ");
+                    String username = scanner.nextLine();
+
+                    System.out.println("enter password: ");
+                    String password = scanner.nextLine();
+                    account = accountCrud.logIn(username, password);
                 } else {
                     System.out.println("wrong command!!!");
                 }
@@ -44,7 +53,7 @@ public class Main {
                 } else if(command.equalsIgnoreCase("unFollow")) {
                     System.out.println("enter account id to un follow: ");
                     Long unFollowId = Long.parseLong(scanner.nextLine());
-                    accountCrud.unFollow(unFollowId, account.getId());
+                   account =  accountCrud.unFollow(unFollowId, account.getId());
                 } else if(command.equalsIgnoreCase("show followers")) {
                     System.out.println(account.getFollowers().toString());
 
@@ -111,7 +120,7 @@ public class Main {
                     System.out.println("enter account id: ");
                     Long id = Long.parseLong(scanner.nextLine());
                     if(command.equalsIgnoreCase("follow")) {
-                        accountCrud.follow(id, account.getId());
+                        account = accountCrud.follow(id, account.getId());
 
                     } else if(command.equalsIgnoreCase("show posts")) {
                         postCrud.showAll(id);

@@ -15,18 +15,13 @@ public class AccountCrud {
     Session session;
 
 
-    public void signUp() {
+    public void signUp(String username, String password) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("enter your username: ");
-        String userName = scanner.nextLine();
-        System.out.println("enter your password: ");
-        String password = scanner.nextLine();
 
         Account account = Account.builder()
-                .username(userName)
+                .username(username)
                 .password(password)
                 .build();
 
@@ -36,18 +31,12 @@ public class AccountCrud {
         session.close();
     }
 
-    public Account logIn() {
+    public Account logIn(String username, String password) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
 
         Account account = null;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("enter username: ");
-        String username = scanner.nextLine();
-
-        System.out.println("enter password: ");
-        String password = scanner.nextLine();
 
         List<Account> list = session.createQuery("from Account where username= :username")
                 .setParameter("username", username)
@@ -126,7 +115,7 @@ public class AccountCrud {
     }
 
     // second argument will follow or un follow the first argument
-    public void follow(Long id, Long followerId) {
+    public Account follow(Long id, Long followerId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
@@ -135,13 +124,17 @@ public class AccountCrud {
         Account follower = session.load(Account.class, followerId);
         followee.getFollowers().add(follower);
 
+        Set<Account>followings = follower.getFollowings();
+        followings.add(followee);
+        follower.setFollowings(followings);
+
         session.flush();
         session.getTransaction().commit();
         session.close();
-
+        return follower;
     }
 
-    public void unFollow(Long id, Long unFollowerId) {
+    public Account unFollow(Long id, Long unFollowerId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
@@ -161,9 +154,14 @@ public class AccountCrud {
         }
         followee.setFollowers(followers);
 
+        Set<Account>followings = follower.getFollowings();
+        followings.remove(followee);
+        follower.setFollowings(followings);
+
         session.flush();
         session.getTransaction().commit();
         session.close();
+        return follower;
     }
 
 }

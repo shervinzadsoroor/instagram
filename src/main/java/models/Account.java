@@ -47,9 +47,10 @@ public class Account implements Serializable {
     @JoinTable(name = "following_follower",
             joinColumns = {@JoinColumn(name = "following_id")},
             inverseJoinColumns = {@JoinColumn(name = "follower_id")})
-    private Set<Account> followers = new HashSet<Account>();
+    private Set<Account> followers = new HashSet<>();
+
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
-    private Set<Account> followings = new HashSet<Account>();
+    private Set<Account> followings = new HashSet<>();
 
 
     public Set<Account> getFollowers() {

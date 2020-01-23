@@ -23,6 +23,9 @@ public class Comment {
     @Column
     private String context;
 
+    @Column
+    int numOfLike;
+
     @ManyToOne
     private Post commentedPost;
 
@@ -32,6 +35,14 @@ public class Comment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getNumOfLike() {
+        return numOfLike;
+    }
+
+    public void setNumOfLike(int numOfLike) {
+        this.numOfLike = numOfLike;
     }
 
     public Account getAuthor() {
@@ -64,6 +75,7 @@ public class Comment {
                 "id=" + id +
                 ", author=" + author +
                 ", context='" + context + '\'' +
+                ", numOfLike=" + numOfLike +
                 '}';
     }
 }

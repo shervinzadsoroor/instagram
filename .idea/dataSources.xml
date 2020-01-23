@@ -7,5 +7,25 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/instagram</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="hibernate.h2.cfg.xml/Hibernate" uuid="a2744b31-62fc-48b9-95bb-808eec13b532">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+C:/Users/hp/IdeaProjects/instagram/src/main/resources/hibernate.h2.cfg.xml</remarks>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:mem:instagram</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="1b9b3a4d-7dfc-4d1c-a719-dd3179daa807">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+C:/Users/hp/IdeaProjects/instagram/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost/instagram?createDatabaseIfNotExist=true</jdbc-url>
+    </data-source>
   </component>
 </project>
