@@ -2,27 +2,14 @@ import hibernateutil.HibernateUtil;
 import models.Account;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import javax.persistence.Query;
+import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AccountCrudTest {
-
-    @BeforeEach
-    public void createAccounts() {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactoryH2();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
-//        Account account1 = new Account(1L,"ali", "1111");
-        //todo   create some accounts with their posts and ...  needed for test the methods of this class
-
-        session.getTransaction().commit();
-        session.close();
-    }
 
     @Test
     public void signUp() {
@@ -30,47 +17,39 @@ public class AccountCrudTest {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Account account = Account.builder()
-                .id(1L)
-                .username("arian")
-                .password("1111")
-                .build();
-
-        session.save(account);
+        Account expectedAccount = new Account(1L, "ali", "1111", null, null, null, null);
+        session.save(expectedAccount);
 
         Account actualAccount = session.load(Account.class, 1L);
 
-        assertSame(account, actualAccount);
+        assertEquals(expectedAccount, actualAccount);
 
         session.getTransaction().commit();
         session.close();
     }
 
     @Test
-    public Account logIn(String username, String password) {
+    public void changePass() {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactoryH2();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Account account = null;
+        Account account = new Account(1L,"ali","1111",null,null,null,null);
+        session.save(account);
 
-        List<Account> list = session.createQuery("from Account where username= :username")
-                .setParameter("username", username)
-                .list();
+        String username = "ali";
+        String password = "2222";
+        Query query = session.createQuery("update Account set password=:password where username=:username")
+                .setParameter("password", password)
+                .setParameter("username", username);
+        query.executeUpdate();
 
-        if(list.size() > 0) {
-            if(list.get(0).getPassword().equals(password)) {
-                account = list.get(0);
-                System.out.println("sign in successful !!!");
-            } else {
-                System.out.println("WRONG PASSWORD !!!");
-            }
-        } else {
-            System.out.println("account does not exist !!! ");
-        }
+        Account expected = new Account(1L,"ali","2222",null,null,null,null);
+        Account actual = session.load(Account.class, 1L);
+
+        assertEquals(expected, actual);
 
         session.getTransaction().commit();
         session.close();
-        return account;
     }
 }

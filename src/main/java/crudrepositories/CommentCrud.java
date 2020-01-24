@@ -28,15 +28,4 @@ public class CommentCrud {
         session.close();
     }
 
-    public void likeComment(){
-
-        sessionFactory = HibernateUtil.getSessionFactory();
-        session = sessionFactory.openSession();
-        session.beginTransaction();
-
-
-
-        session.getTransaction().commit();
-        session.close();
-    }
 }
