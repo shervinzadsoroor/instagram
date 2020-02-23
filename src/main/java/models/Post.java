@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Builder
 
 @Entity
 public class Post implements Serializable, Comparable<Post> {
@@ -37,6 +37,17 @@ public class Post implements Serializable, Comparable<Post> {
 
     @ManyToMany(mappedBy = "LikedPosts")
     private Set<Account> likerAccounts = new HashSet<>();
+
+    public Post() {
+    }
+
+
+    public Post(String tag, String title, int numOfLiked, Account account) {
+        this.tag = tag;
+        this.title = title;
+        this.numOfLiked= numOfLiked;
+        this.account = account;
+    }
 
     public Set<Account> getLikerAccounts() {
         return likerAccounts;

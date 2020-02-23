@@ -6,7 +6,7 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
         <property name="hibernate.connection.url">
-            jdbc:mysql://localhost/instagram?createDatabaseIfNotExist=true
+            jdbc:mysql://localhost:3309/instagram?createDatabaseIfNotExist=true
         </property>
 
         <property name="hibernate.connection.driver_class">

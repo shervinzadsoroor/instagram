@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.stream.Stream;
+
 
 public class PostCrud {
     private SessionFactory sessionFactory;
@@ -22,12 +22,7 @@ public class PostCrud {
         session.beginTransaction();
 
         String[] contents = content.split(",");
-        Post post = Post.builder()
-                .tag(contents[0])
-                .title(contents[1])
-                .numOfLiked(0)
-//                .account(account)
-                .build();
+        Post post = new Post(contents[0], contents[1], 0, account);
         session.save(post);
 
         session.getTransaction().commit();
@@ -70,17 +65,21 @@ public class PostCrud {
         session.close();
     }
 
-    public void showAll(Long accountId) {
+    public boolean showAll(Long accountId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
         session.beginTransaction();
 
+        boolean bool = false;
         Account account = session.load(Account.class, accountId);
-        System.out.println(account.getPosts().size() > 0 ? account.getPosts().toString() :
-                "account does not have any posts !!!");
+        if (account.getPosts().size() > 0) {
+            System.out.println(account.getPosts().toString());
+            bool = true;
+        }
 
         session.getTransaction().commit();
         session.close();
+        return bool;
     }
 
     public boolean isIdExist(Long id) {
@@ -91,8 +90,8 @@ public class PostCrud {
         boolean bool = false;
         List<Post> posts = session.createQuery("from Post ")
                 .list();
-        for(Post post : posts) {
-            if(post.getId() == id) {
+        for (Post post : posts) {
+            if (post.getId() == id) {
                 bool = true;
             }
         }
@@ -116,7 +115,7 @@ public class PostCrud {
         boolean bool = LikerAccounts.add(likerAccount);
         post.setLikerAccounts(LikerAccounts);
         //todo   liker accounts does not been saved in database !!!
-        if(bool) {
+        if (bool) {
             post.setNumOfLiked((post.getNumOfLiked()) + 1);
         }
 

@@ -20,11 +20,12 @@ public class AccountCrud {
         session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Account account = Account.builder()
-                .username(username)
-                .password(password)
-                .build();
+//        Account account1 = Account.builder()
+//                .username(username)
+//                .password(password)
+//                .build();
 
+        Account account = new Account(username,password);
         session.save(account);
 
         session.getTransaction().commit();

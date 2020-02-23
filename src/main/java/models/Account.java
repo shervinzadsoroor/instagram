@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Builder
 @Entity
 public class Account implements Serializable {
     @Id
@@ -34,6 +34,14 @@ public class Account implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "likedPost_id")})
     private Set<Post> LikedPosts = new HashSet<>();
 
+    public Account() {
+    }
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public Set<Post> getLikedPosts() {
         return LikedPosts;
     }
@@ -43,6 +51,7 @@ public class Account implements Serializable {
     }
 
     //following and followers
+    // TODO: 2/18/20 cascade type should not be all , edit it
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "following_follower",
             joinColumns = {@JoinColumn(name = "following_id")},

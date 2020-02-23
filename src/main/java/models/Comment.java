@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Builder
 
 @Entity
 public class Comment {
@@ -28,6 +28,16 @@ public class Comment {
 
     @ManyToOne
     private Post commentedPost;
+
+    public Comment() {
+    }
+
+    public Comment(Account author, String context, int numOfLike,Post commentedPost) {
+        this.author = author;
+        this.context = context;
+        this.numOfLike = numOfLike;
+        this.commentedPost = commentedPost;
+    }
 
     public Long getId() {
         return id;
