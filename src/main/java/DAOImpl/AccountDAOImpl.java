@@ -1,20 +1,24 @@
-package crudrepositories;
+package DAOImpl;
 
+import DAO.AccountDAO;
 import hibernateutil.HibernateUtil;
 import models.Account;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
-public class AccountCrud {
+public class AccountDAOImpl implements AccountDAO {
     SessionFactory sessionFactory;
     Session session;
 
 
+    @Override
     public void signUp(String username, String password) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -25,13 +29,14 @@ public class AccountCrud {
 //                .password(password)
 //                .build();
 
-        Account account = new Account(username,password);
+        Account account = new Account(username, password);
         session.save(account);
 
         session.getTransaction().commit();
         session.close();
     }
 
+    @Override
     public Account logIn(String username, String password) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -43,8 +48,13 @@ public class AccountCrud {
                 .setParameter("username", username)
                 .list();
 
-        if(list.size() > 0) {
-            if(list.get(0).getPassword().equals(password)) {
+//        Query query = session.createQuery("from Account where username=:username")
+//                .setParameter("username", username);
+//         account = (Account) query.getSingleResult();
+
+
+        if (list.size() > 0) {
+            if (list.get(0).getPassword().equals(password)) {
                 account = list.get(0);
                 System.out.println("sign in successful !!!");
             } else {
@@ -59,6 +69,7 @@ public class AccountCrud {
         return account;
     }
 
+    @Override
     public void changePass(Account account) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -71,7 +82,7 @@ public class AccountCrud {
         System.out.println("enter new password");
         String secondNewPass = scanner.nextLine();
 
-        if(firstNewPass.equals(secondNewPass)) {
+        if (firstNewPass.equals(secondNewPass)) {
             Query query = session.createQuery("update Account set password=:password where username=:username")
                     .setParameter("password", firstNewPass)
                     .setParameter("username", account.getUsername());
@@ -83,6 +94,7 @@ public class AccountCrud {
         session.close();
     }
 
+    @Override
     public void delete(Long id) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -97,6 +109,7 @@ public class AccountCrud {
         session.close();
     }
 
+    @Override
     public void search(String username) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -104,18 +117,20 @@ public class AccountCrud {
 
         List<Account> accounts = session.createQuery("from Account where username like '%" + username + "%'")
                 .list();
-        if(accounts.size() > 0) {
-            for(Account account : accounts) {
+        if (accounts.size() > 0) {
+            for (Account account : accounts) {
                 System.out.println(account.toString());
             }
         } else {
             System.out.println("NO RESULT !!!");
         }
+
         session.getTransaction().commit();
         session.close();
     }
 
     // second argument will follow or un follow the first argument
+    @Override
     public Account follow(Long id, Long followerId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -125,16 +140,20 @@ public class AccountCrud {
         Account follower = session.load(Account.class, followerId);
         followee.getFollowers().add(follower);
 
-        Set<Account>followings = follower.getFollowings();
+        Set<Account> followings = follower.getFollowings();
         followings.add(followee);
         follower.setFollowings(followings);
 
         session.flush();
         session.getTransaction().commit();
         session.close();
+
+        BiConsumer<String, String> consumer = (s, s2) -> System.out.println(s + s2);
+
         return follower;
     }
 
+    @Override
     public Account unFollow(Long id, Long unFollowerId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -145,17 +164,17 @@ public class AccountCrud {
         Account follower = session.load(Account.class, unFollowerId);
         Set<Account> followers = followee.getFollowers();
 
-        for(Account f : followers) {
-            if(f.getId() == unFollowerId) {
+        for (Account f : followers) {
+            if (f.getId() == unFollowerId) {
                 isFollowerExist = true;
             }
         }
-        if(isFollowerExist) {
+        if (isFollowerExist) {
             followers.remove(follower);
         }
         followee.setFollowers(followers);
 
-        Set<Account>followings = follower.getFollowings();
+        Set<Account> followings = follower.getFollowings();
         followings.remove(followee);
         follower.setFollowings(followings);
 

@@ -1,5 +1,6 @@
-package crudrepositories;
+package DAOImpl;
 
+import DAO.CommentDAO;
 import hibernateutil.HibernateUtil;
 import models.Account;
 import models.Comment;
@@ -7,12 +8,11 @@ import models.Post;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import javax.management.Query;
-
-public class CommentCrud {
+public class CommentDAOImpl implements CommentDAO {
     SessionFactory sessionFactory;
     Session session;
 
+    @Override
     public void newComment(Account author, String context, Long postId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();

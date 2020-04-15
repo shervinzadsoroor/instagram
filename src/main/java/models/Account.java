@@ -4,10 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 //@AllArgsConstructor
 //@NoArgsConstructor
@@ -108,6 +105,26 @@ public class Account implements Serializable {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(id, account.id) &&
+                Objects.equals(username, account.username) &&
+                Objects.equals(password, account.password) &&
+                Objects.equals(posts, account.posts) &&
+                Objects.equals(LikedPosts, account.LikedPosts) &&
+                Objects.equals(followers, account.followers) &&
+                Objects.equals(followings, account.followings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, posts, LikedPosts, followers, followings);
     }
 
     @Override

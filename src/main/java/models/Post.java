@@ -4,10 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 //@AllArgsConstructor
 //@NoArgsConstructor
@@ -96,6 +93,25 @@ public class Post implements Serializable, Comparable<Post> {
 
     public void setNumOfLiked(int numOfLiked) {
         this.numOfLiked = numOfLiked;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return numOfLiked == post.numOfLiked &&
+                Objects.equals(id, post.id) &&
+                Objects.equals(title, post.title) &&
+                Objects.equals(tag, post.tag) &&
+                Objects.equals(comments, post.comments) &&
+                Objects.equals(account, post.account) &&
+                Objects.equals(likerAccounts, post.likerAccounts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, tag, numOfLiked, comments, account, likerAccounts);
     }
 
     @Override

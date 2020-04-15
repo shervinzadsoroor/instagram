@@ -1,5 +1,6 @@
-package crudrepositories;
+package DAOImpl;
 
+import DAO.PostDAO;
 import hibernateutil.HibernateUtil;
 import models.Account;
 import models.Post;
@@ -12,10 +13,11 @@ import java.util.Scanner;
 import java.util.Set;
 
 
-public class PostCrud {
+public class PostDAOImpl implements PostDAO {
     private SessionFactory sessionFactory;
     private Session session;
 
+    @Override
     public void newPost(String content, Account account) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -29,6 +31,7 @@ public class PostCrud {
         session.close();
     }
 
+    @Override
     public String getNewPostContent() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("enter tag: ");
@@ -38,6 +41,7 @@ public class PostCrud {
         return tag + "," + title;
     }
 
+    @Override
     public void edit(Long postId, String editItem, String newValue) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -52,6 +56,7 @@ public class PostCrud {
         session.close();
     }
 
+    @Override
     public void delete(Long postId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -65,6 +70,7 @@ public class PostCrud {
         session.close();
     }
 
+    @Override
     public boolean showAll(Long accountId) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -82,6 +88,7 @@ public class PostCrud {
         return bool;
     }
 
+    @Override
     public boolean isIdExist(Long id) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -101,6 +108,7 @@ public class PostCrud {
         return bool;
     }
 
+    @Override
     public void like(Long postIdToLike, Long accountId, Long accountIdWantsToLike) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
@@ -124,6 +132,7 @@ public class PostCrud {
         session.close();
     }
 
+    @Override
     public void searchTopLikedPosts(Long postQuantity) {
         sessionFactory = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();

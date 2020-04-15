@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 //@AllArgsConstructor
 //@NoArgsConstructor
@@ -77,6 +78,24 @@ public class Comment {
 
     public void setCommentedPost(Post commentedPost) {
         this.commentedPost = commentedPost;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return numOfLike == comment.numOfLike &&
+                Objects.equals(id, comment.id) &&
+                Objects.equals(author, comment.author) &&
+                Objects.equals(context, comment.context) &&
+                Objects.equals(commentedPost, comment.commentedPost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, author, context, numOfLike, commentedPost);
     }
 
     @Override
