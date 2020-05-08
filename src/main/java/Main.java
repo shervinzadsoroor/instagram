@@ -1,8 +1,13 @@
+import DAO.LogDAO;
 import DAOImpl.AccountDAOImpl;
 import DAOImpl.CommentDAOImpl;
+import DAOImpl.LogDAOImpl;
 import DAOImpl.PostDAOImpl;
 import models.Account;
+import models.Log;
+import models.LogType;
 
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Main {
@@ -12,6 +17,7 @@ public class Main {
         AccountDAOImpl accountDAOImpl = new AccountDAOImpl();
         PostDAOImpl postDAOImpl = new PostDAOImpl();
         CommentDAOImpl commentDAOImpl = new CommentDAOImpl();
+        LogDAO logDAO = new LogDAOImpl();
         Scanner scanner = new Scanner(System.in);
         String command;
 
@@ -37,6 +43,12 @@ public class Main {
                     System.out.println("enter password: ");
                     String password = scanner.nextLine();
                     account = accountDAOImpl.logIn(username, password);
+                    if (account != null) {
+                        Log log = new Log();
+                        log.setType(LogType.INFO.toString());
+                        log.setMessage("user: " + username + " logged in at " + LocalDateTime.now());
+                        logDAO.save(log);
+                    }
                 } else {
                     System.out.println("wrong command!!!");
                 }

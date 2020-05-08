@@ -25,6 +25,7 @@
         <mapping class="models.Account"/>
         <mapping class="models.Post"/>
         <mapping class="models.Comment"/>
+        <mapping class="models.Log"/>
 
 
     </session-factory>

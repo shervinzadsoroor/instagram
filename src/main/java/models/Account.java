@@ -11,6 +11,7 @@ import java.util.*;
 //@Builder
 @Entity
 public class Account implements Serializable {
+    private static final long serialVersionUID = -7599376829245838172L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column

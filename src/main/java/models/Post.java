@@ -12,6 +12,7 @@ import java.util.*;
 
 @Entity
 public class Post implements Serializable, Comparable<Post> {
+    private static final long serialVersionUID = 1289401080551791082L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
